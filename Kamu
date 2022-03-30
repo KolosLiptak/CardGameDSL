@@ -1,0 +1,60 @@
+Game Kamu
+Deck StandardDeck
+Player Jim: JimHand
+Player Bob: BobHand
+Player Board: BoardDeck
+Action PlaceCard
+Action Reaction
+Action getNextPlayer
+Action callKamu
+Phase Setup
+Phase Main
+
+<lapok szétosztása, firstplayer beállítása>
+Setup
+	BoardDeck = StandardDeck
+	while BoardDeck.isNotEmpty
+		if BoardDeck.isEven
+			move BoardDeck.lastCard to JimHand
+		else move BoardDeck.lastCard to BobHand
+currentPlayer = Jim
+
+
+<amíg nem fogyott el valaki kezéből a lap, addig
+aktuális játékos rak egy lapot
+a másik játékos reagál rá
+majd ő is tesz egy lapot>
+Main
+while JimHand isNotEmpty and BobHand isNotEmpty
+		PlaceCard currentPlayer
+		currentPlayer = getNextPlayer
+		Reaction currentPlayer
+PlaceCard
+	move currentPlayer.pickCard to BoardDeck
+pickCard
+	pickedCard = currentPlayer.getCard
+Reaction
+	optional callKamu
+
+<ha a játéktér paklijának tetején lévő kártya „sorszáma”
+nem egyezik meg a pakli méretével, tehát kamuzott,
+az aktív játékos a kamuzó játékos lesz
+majd az aktív játékos felhúzza az egész paklit>
+callKamu
+	if BoardDeck.lastCard.getNumber != BoardDeck.getSize
+		currentPlayer = getNextPlayer
+	while BoardDeck isNotEmpty
+		move BoardDeck.lastCard to currentPlayer
+		
+<következő játékos itt mindig a másik játékos>
+getNextPlayer
+	if currentplayer == Jim
+		currentPlayer = Bob
+	else currentPlayer = Jim
+
+<ez lehetne egy beépített függvénykészlet ami a nyelvhez tartozik>
+move
+isEven
+isNotEmpty
+lastCard
+pickCard
